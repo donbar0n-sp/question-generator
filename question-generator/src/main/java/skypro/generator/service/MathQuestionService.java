@@ -1,7 +1,6 @@
 package skypro.generator.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,12 +10,11 @@ import skypro.generator.repository.QuestionRepository;
 import java.util.*;
 
 @Service
-@Qualifier ("javaQuestionService")
-public class JavaQuestionService implements QuestionService {
+public class MathQuestionService implements QuestionService {
     private final QuestionRepository questionRepository;
 
     @Autowired
-    public JavaQuestionService(QuestionRepository questionRepository) {
+    public MathQuestionService(QuestionRepository questionRepository) {
         this.questionRepository = questionRepository;
     }
 
@@ -49,3 +47,4 @@ public class JavaQuestionService implements QuestionService {
         return new ArrayList<>(allQuestions).get(new Random().nextInt(allQuestions.size()));
     }
 }
+

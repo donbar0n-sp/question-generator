@@ -8,30 +8,30 @@ import skypro.generator.domain.Question;
 import skypro.generator.repository.QuestionRepository;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class JavaQuestionServiceTest {
+class MathQuestionServiceTest {
 
     @Mock
     private QuestionRepository questionRepository;
-    private JavaQuestionService javaQuestionService;
+
+    private MathQuestionService mathQuestionService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        javaQuestionService = new JavaQuestionService(questionRepository);
+        mathQuestionService = new MathQuestionService(questionRepository);
     }
 
     @Test
     void shouldAddQuestion() {
-        Question question = new Question("What is Java?", "A programming language");
+        Question question = new Question("What is 2 + 2?", "4");
 
         when(questionRepository.add(question)).thenReturn(question);
 
-        Question result = javaQuestionService.add(question);
+        Question result = mathQuestionService.add(question);
 
         assertEquals(question, result);
         verify(questionRepository, times(1)).add(question);
@@ -39,11 +39,11 @@ class JavaQuestionServiceTest {
 
     @Test
     void shouldRemoveQuestion() {
-        Question question = new Question("What is Java?", "A programming language");
+        Question question = new Question("What is 2 + 2?", "4");
 
         when(questionRepository.remove(question)).thenReturn(question);
 
-        Question result = javaQuestionService.remove(question);
+        Question result = mathQuestionService.remove(question);
 
         assertEquals(question, result);
         verify(questionRepository, times(1)).remove(question);
@@ -52,13 +52,13 @@ class JavaQuestionServiceTest {
     @Test
     void shouldReturnAllQuestions() {
         List<Question> questions = List.of(
-                new Question("What is Java?", "A programming language"),
-                new Question("What is Spring?", "A Java framework")
+                new Question("What is 2 + 2?", "4"),
+                new Question("What is 5 * 6?", "30")
         );
 
         when(questionRepository.getAll()).thenReturn(questions);
 
-        assertEquals(questions, javaQuestionService.getAll());
+        assertEquals(questions, mathQuestionService.getAll());
         verify(questionRepository, times(1)).getAll();
     }
 }

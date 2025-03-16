@@ -18,41 +18,47 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ExaminerServiceImplTest {
     @Mock
-    private QuestionService questionService;
+    private JavaQuestionService javaQuestionService;
+
+    @Mock
+    private MathQuestionService mathQuestionService;
 
     @InjectMocks
     private ExaminerServiceImpl examinerService;
 
-    private final List<Question> sampleQuestions = List.of(
+    private final List<Question> javaQuestions = List.of(
             new Question("What is Java?", "A programming language"),
-            new Question("What is Spring?", "A Java framework"),
-            new Question("What is an interface?", "A contract for classes")
+            new Question("What is Spring?", "A Java framework")
+    );
+
+    private final List<Question> mathQuestions = List.of(
+            new Question("What is 2 + 2?", "4"),
+            new Question("What is 5 * 6?", "30")
     );
 
     @BeforeEach
     void setUp() {
-        // Remove MockitoAnnotations.openMocks(this) since @ExtendWith(MockitoExtension.class) is enough
+        when(javaQuestionService.getAll()).thenReturn(javaQuestions);
+        when(mathQuestionService.getAll()).thenReturn(mathQuestions);
     }
 
     @Test
     void shouldReturnRequestedNumberOfQuestions() {
-        when(questionService.getAll()).thenReturn(sampleQuestions);
-
         Set<Question> questions = (Set<Question>) examinerService.getQuestions(2);
 
         assertEquals(2, questions.size());
-        verify(questionService, times(1)).getAll();
+        verify(javaQuestionService, times(1)).getAll();
+        verify(mathQuestionService, times(1)).getAll();
     }
 
     @Test
     void shouldThrowExceptionWhenRequestingMoreThanAvailable() {
-        when(questionService.getAll()).thenReturn(sampleQuestions);
-
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> examinerService.getQuestions(10)
         );
 
         assertEquals("400 BAD_REQUEST \"Not enough questions available.\"", exception.getMessage());
-        verify(questionService, times(1)).getAll();
+        verify(javaQuestionService, times(1)).getAll();
+        verify(mathQuestionService, times(1)).getAll();
     }
 }

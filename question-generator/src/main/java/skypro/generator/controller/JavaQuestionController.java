@@ -1,5 +1,6 @@
 package skypro.generator.controller;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import skypro.generator.domain.Question;
 import skypro.generator.service.QuestionService;
@@ -11,7 +12,7 @@ import java.util.Collection;
 public class JavaQuestionController {
     private final QuestionService questionService;
 
-    public JavaQuestionController(QuestionService questionService) {
+    public JavaQuestionController(@Qualifier("javaQuestionService") QuestionService questionService) {
         this.questionService = questionService;
     }
 
@@ -28,5 +29,10 @@ public class JavaQuestionController {
     @GetMapping
     public Collection<Question> getQuestions() {
         return questionService.getAll();
+    }
+
+    @GetMapping("/random")
+    public Question getRandomQuestion() {
+        return questionService.getRandomQuestion();
     }
 }
